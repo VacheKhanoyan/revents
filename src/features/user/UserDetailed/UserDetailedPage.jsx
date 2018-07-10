@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const UserDetailedPage = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+  return <div />;
+};
 
-export default UserDetailedPage
+export default UserDetailedPage;

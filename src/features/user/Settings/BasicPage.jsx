@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const BasicPage = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+  return <div />;
+};
 
-export default BasicPage
+export default BasicPage;
