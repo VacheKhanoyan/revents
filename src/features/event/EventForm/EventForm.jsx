@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import cuid from 'cuid'
 import { Segment, Form, Button } from "semantic-ui-react";
+import { createEvent, updateEvent } from "../eventActions";
 
 const mapStateToProps = (state, ownProps)=>{
   const eventId = ownProps.match.params.id;
@@ -19,6 +21,10 @@ return {
 }
 }
 
+const actions={
+  createEvent,
+  updateEvent
+}
 
 class EventForm extends Component {
   state = {
@@ -43,9 +49,16 @@ class EventForm extends Component {
   onFormSubmit = e => {
     e.preventDefault();
     if (this.state.event.id) {
-      this.props.updatedEvent(this.state.event);
+      this.props.updateEvent(this.state.event);
+      this.props.history.goBack()
     } else {
-      this.props.createEvent(this.state.event);
+      const newEvent={
+        ...this.state.event,
+        id:cuid(),
+        hostPhotoURL: '/assets/user.png'
+      }
+      this.props.createEvent(newEvent);
+      this.props.history.push('/events')
     }
   };
   onInputChange = e => {
@@ -53,6 +66,7 @@ class EventForm extends Component {
     newEvent[e.target.name] = e.target.value;
     this.setState({ event: newEvent });
   };
+  
   render() {
     const { handleCancel } = this.props;
     const { event } = this.state;
@@ -108,7 +122,7 @@ class EventForm extends Component {
           <Button positive type="submit">
             Submit
           </Button>
-          <Button type="button" onClick={handleCancel}>
+          <Button type="button" onClick={this.props.history.goBack}>
             Cancel
           </Button>
         </Form>
@@ -117,4 +131,4 @@ class EventForm extends Component {
   }
 }
 
-export default connect(mapStateToProps)(EventForm);
+export default connect(mapStateToProps,actions)(EventForm);
