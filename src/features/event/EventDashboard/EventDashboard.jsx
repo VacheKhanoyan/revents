@@ -1,50 +1,33 @@
-import React, { Component } from "react";
-import { Grid } from "semantic-ui-react";
-import { connect } from "react-redux";
-import {  deleteEvent } from "./../eventActions";
-import EventList from "../EventList/EventList";
+import React, { Component } from 'react';
+import { Grid } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import { deleteEvent } from '../eventActions';
+import EventList from '../EventList/EventList';
 
-const mapStateToProps = state => ({
+const mapState = state => ({
   events: state.events
 });
+
 const actions = {
- 
-  deleteEvent,
- 
+  deleteEvent
 };
+
 class EventDashboard extends Component {
-  
-  
-  handleDeleteEvent = eventId => {
-    // console.log(eventId);
+  handleDeleteEvent = eventId => () => {
     this.props.deleteEvent(eventId);
   };
-  
-  render() {
 
+  render() {
     const { events } = this.props;
     return (
       <Grid>
         <Grid.Column width={10}>
-          <EventList
-            onOpenEvent={editEvent => {
-              this.handleOpenEvent(editEvent);
-            }}
-            deleteEvent={eventId => {
-              this.handleDeleteEvent(eventId);
-            }}
-            events={events}
-          />
+          <EventList deleteEvent={this.handleDeleteEvent} events={events} />
         </Grid.Column>
-        <Grid.Column width={6}>
-  
-        </Grid.Column>
+        <Grid.Column width={6} />
       </Grid>
     );
   }
 }
 
-export default connect(
-  mapStateToProps,
-  actions
-)(EventDashboard);
+export default connect(mapState, actions)(EventDashboard);
